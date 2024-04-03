@@ -3,19 +3,19 @@ use std::iter::{repeat, once};
 mod tests;
 
 fn main() {
+    let irr_pol = Poly(vec![1,1,0,1], 2);
     let q1 = diff_uniformity(
-        0i32..11i32,
-        |x| x.pow(3),
-        |x| x.rem_euclid(11),
+        irr_pol.clone().field_elements(),
+        |x| (x.clone() * x),
+        |x| x.reduced(&irr_pol)
     );
-
     println!("Task 2.1.4: {}", q1);
     
-    let extending_pol = Poly(vec![1,1,0,1], 3);
+    let irr_pol = Poly(vec![2,2,1], 3);
     let q5 = diff_uniformity(
-        extending_pol.clone().field_elements(),
+        irr_pol.clone().field_elements(),
         |x| (x.clone() * x),
-        |x| x.reduced(&extending_pol)
+        |x| x.reduced(&irr_pol)
     );
     
     println!("Task 2.5: {}", q5);
