@@ -1,5 +1,3 @@
-use std::iter::{repeat, once};
-
 mod tests;
 
 fn main() {
@@ -83,7 +81,7 @@ impl Poly {
         while polynomial.0.len() > irr_degree {
             let highest = polynomial.0.last().unwrap().clone();
             if highest == 0 {
-            polynomial.0.pop();
+                polynomial.0.pop();
                 continue
             }
 
