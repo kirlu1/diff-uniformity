@@ -4,7 +4,7 @@ fn main() {
     let irr_pol = Poly(vec![1,1,0,1], 2);
     let q1 = diff_uniformity(
         irr_pol.clone().field_elements(),
-        |x| (x.clone() * x),
+        |x| (x.clone() * x.clone() * x),
         |x| x.reduced(&irr_pol)
     );
     println!("Task 2.1.4: {}", q1);
