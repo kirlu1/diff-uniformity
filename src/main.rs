@@ -78,15 +78,28 @@ impl Poly {
     fn reduced(self, irr_pol : &Poly) -> Poly {
         let basefield = self.1;
         let mut polynomial = self;
-        let irr_degree = irr_pol.0.len();
+        let irr_degree = irr_pol.0.len()-1;
 
-        for idx in (irr_degree-1..polynomial.0.len()).rev() {
-            let degrees_higher = Poly(repeat(0i32).take(idx).chain(once(1)).collect(), basefield);
-            let term = degrees_higher * irr_pol.clone();
-
-            polynomial = polynomial - term;
+        while polynomial.0.len() > irr_degree {
+            let highest = polynomial.0.last().unwrap().clone();
+            if highest == 0 {
             polynomial.0.pop();
+                continue
+            }
+
+            let mut v = vec![0; polynomial.0.len()-irr_degree-1];
+            v.push(highest);
+
+            let reduction = Poly(v, basefield) * irr_pol.clone();
+            polynomial = polynomial - reduction;
+
+            let x = polynomial.0.pop().unwrap();
+            if x != 0 {
+                dbg!(polynomial);
+                panic!("wtf, x: {}", x)
+            }
         }
+
 
         polynomial
     }
