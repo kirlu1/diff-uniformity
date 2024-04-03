@@ -133,7 +133,7 @@ impl std::ops::Mul for Poly {
 
     fn mul(self, rhs: Self) -> Self::Output {
         let base_field = self.1;
-        let deg = self.0.len()+rhs.0.len();
+        let deg = self.0.len()+rhs.0.len()-1;
         let mut product : Vec<i32> = vec![0; deg];
 
         for (deg_i, i) in self.0.iter().enumerate() {
@@ -142,7 +142,9 @@ impl std::ops::Mul for Poly {
             }
         }
 
-        let _ = product.iter_mut().map(|n| *n=n.rem_euclid(base_field));
+        for x in product.iter_mut() {
+            *x = x.rem_euclid(base_field);
+        }
         Poly(product, base_field).prune()
     }
 }
@@ -151,7 +153,9 @@ impl std::ops::Sub for Poly {
     type Output = Poly;
 
     fn sub(self, mut rhs: Self) -> Self::Output {
-        let _ = rhs.0.iter_mut().map(|x| *x*=-1);
+        for x in rhs.0.iter_mut() {
+            *x*=-1;
+        }
         self+rhs // modulo handled in add
     }
 }
